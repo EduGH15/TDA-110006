@@ -169,7 +169,7 @@ void *lista_primero(lista_t *lista)
 	if(lista == NULL || lista->cantidad == 0){
 		return NULL;
 	}
-	return lista->nodo_inicio->elemento;
+	return lista->nodo_inicio->siguiente->elemento;
 }
 
 void *lista_ultimo(lista_t *lista)
@@ -177,7 +177,7 @@ void *lista_ultimo(lista_t *lista)
 	if(lista == NULL || lista->cantidad == 0){
 		return NULL;
 	}
-	return lista->nodo_fin->elemento;
+	return lista->nodo_fin->siguiente->elemento;
 }
 
 bool lista_vacia(lista_t *lista)
