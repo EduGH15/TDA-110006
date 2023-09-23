@@ -11,12 +11,13 @@ typedef struct nodo {
 struct lista {
 	nodo_t *nodo_inicio;
 	nodo_t* nodo_fin;
-	int cantidad;
+	size_t cantidad;
 };
 
 struct lista_iterador {
-	//y acá?
-	int sarasa;
+	nodo_t* nodo_actual;
+	lista_t* lista;
+	size_t elementos_iterados;
 };
 
 lista_t *lista_crear()
@@ -55,6 +56,10 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 		return NULL;
 	}
 
+	if(posicion == 0 || lista->cantidad == 0 || posicion >= lista->cantidad){
+		return lista_insertar(lista, elemento);
+	}
+
 	nodo_t* nodo_nuevo = malloc(sizeof(nodo_t));
 	if(nodo_nuevo == NULL){
 		free(lista);
@@ -63,6 +68,7 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	
 	nodo_nuevo->elemento = elemento;
 	nodo_nuevo->siguiente = NULL;
+
 
 	nodo_t* nodo_actual = lista->nodo_inicio;
 	size_t contador = 0;
@@ -73,10 +79,6 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	
 	nodo_nuevo->siguiente = nodo_actual->siguiente;
 	nodo_actual->siguiente = nodo_nuevo;
-	
-	if(posicion >= lista->cantidad)
-		lista->nodo_fin = nodo_nuevo;
-	
 	(lista->cantidad)++;
 	return lista;
 }
@@ -113,9 +115,14 @@ void *lista_quitar(lista_t *lista)
 
 void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 {
-	if(lista == NULL || posicion >= lista->cantidad || lista->nodo_inicio == NULL){
+	if(lista == NULL || lista->nodo_inicio == NULL){
 		return NULL;
 	}
+
+	if(posicion >= lista->cantidad){
+		return lista_quitar(lista);
+	}
+
 	nodo_t* nodo_anterior = lista->nodo_inicio;
 	for (size_t i = 0; i < posicion - 1; i++) 
 	{
@@ -160,6 +167,7 @@ void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 		}else{
 			nodo_actual = nodo_actual->siguiente;
 		}
+		contador++;
 	}
 	return nodo_actual->elemento;
 }
@@ -203,34 +211,84 @@ void lista_destruir(lista_t *lista)
 
 void lista_destruir_todo(lista_t *lista, void (*funcion)(void *))
 {
+	if(lista == NULL || funcion == NULL)
+		return;
+	
+	nodo_t* nodo_actual = lista->nodo_inicio;
+	size_t contador = 0;
+	while(contador < lista->cantidad){
+		(*funcion)(nodo_actual->elemento);
+		contador++;
+	}
 }
 
 lista_iterador_t *lista_iterador_crear(lista_t *lista)
-{
-	return NULL;
+{	
+	if(lista == NULL)
+		return NULL;
+
+	struct lista_iterador* lista_iterador = malloc(sizeof(lista_t));
+	if(lista_iterador == NULL)
+		return NULL;
+	
+	lista_iterador->nodo_actual = lista->nodo_inicio;
+	lista_iterador->lista = lista;
+	lista_iterador->elementos_iterados = 0;
+	return lista_iterador;
 }
 
 bool lista_iterador_tiene_siguiente(lista_iterador_t *iterador)
-{
-	return false;
+{	
+	if(iterador == NULL || iterador->nodo_actual == NULL || iterador->lista == NULL || iterador->elementos_iterados >= iterador->lista->cantidad) 
+		return false;
+
+	return true;
 }
 
 bool lista_iterador_avanzar(lista_iterador_t *iterador)
-{
+{	
+	if(iterador == NULL || iterador->nodo_actual == NULL || iterador->lista == NULL || iterador->elementos_iterados >= iterador->lista->cantidad)
+		return false;
+	
+	if(iterador->nodo_actual->siguiente != NULL){
+		iterador->nodo_actual = iterador->nodo_actual->siguiente;
+		(iterador->elementos_iterados)++;
+		return true;
+	}
 	return false;
 }
 
 void *lista_iterador_elemento_actual(lista_iterador_t *iterador)
-{
-	return NULL;
+{	
+	if(iterador == NULL || iterador->nodo_actual == NULL || iterador->lista == NULL)
+		return NULL;
+
+	return iterador->nodo_actual->elemento;
 }
 
 void lista_iterador_destruir(lista_iterador_t *iterador)
 {
+	if(iterador == NULL || iterador->nodo_actual == NULL || iterador->lista == NULL)
+		return;
+	free(iterador);
 }
 
 size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),
 			       void *contexto)
-{
-	return 0;
+{	
+	if(lista == NULL || funcion == NULL || contexto == NULL){
+		return 0;
+	}
+
+	size_t contador = 0;
+	nodo_t* nodo_actual = lista->nodo_inicio;
+	while(nodo_actual != NULL && (funcion)(nodo_actual->elemento, contexto)){
+		nodo_actual = nodo_actual->siguiente;
+		contador++;
+	}
+
+	return contador;
 }
+
+//Casos a tomar en cuenta a la hora de insertar o borrar. Cuando elimino al inicio, en medio y el fin.
+//Las primitivas no puedo mezclarlas. 
