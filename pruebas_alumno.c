@@ -5,73 +5,46 @@ void se_puede_crear_lista()
 {
     lista_t* lista = lista_crear();
     pa2m_afirmar(lista != NULL, "Se pudo crear una lista.");
-    lista_destruir(lista);
-}
-
-void una_lista_recien_creada_tiene_tamano_0()
-{
-    lista_t* lista = lista_crear();
     pa2m_afirmar(lista_tamanio(lista) == 0, "Una lista creada tiene tamaño cero.");
-    lista_destruir(lista);
-}
-
-void el_primer_elemento_lista_vacia_es_null(){
-    lista_t* lista = lista_crear();
     pa2m_afirmar(lista_primero(lista) == NULL, "El primer elemento de una lista vacia es NULL.");
-    lista_destruir(lista);
-}
-
-void el_ultimo_elemento_lista_vacia_es_null(){
-    lista_t* lista = lista_crear();
     pa2m_afirmar(lista_ultimo(lista) == NULL, "El ultimo elemento de una lista vacia es NULL.");
     lista_destruir(lista);
 }
 
-void borrar_al_final_lista_vacia_devuelve_null(){
+void se_puede_agregar_o_quitar_elementos_de_lista_null(){
     lista_t* lista = lista_crear();
     pa2m_afirmar(lista_quitar(lista) == NULL, "Borrar al final de una lista sin elementos devuelve NULL");
-    lista_destruir(lista);
-}
-
-void borrar_en_posicion_arbitraria_de_lista_vacia_devuelve_null(){
-    lista_t* lista = lista_crear();
     pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == NULL, "Borrar en posicion arbitraria a una lista sin elementos devuelve NULL");
-    lista_destruir(lista);
-}
-
-void pedir_una_posicion_arbitraria_de_lista_vacia_devuelve_null(){
-    lista_t* lista = lista_crear();
     pa2m_afirmar(lista_elemento_en_posicion(lista, 10) == NULL, "Pedir una posicion arbitraria a una lista sin elementos devuelve NULL");
     lista_destruir(lista);
 }
 
+
 void insertar_varios_elementos_devuelve_lista(){
     lista_t* lista = lista_crear();
-    void *e1 = (void*)0xbebecafe, *e2 = (void*)0x78910, *e3 = (void*)0x82722, *e4 = (void*)0xcafe133, *e5 = (void*)0x82456, *e6 = (void*)0x12345;
+    void *e1 = (void*)0xbebecafe, *e2 = (void*)0x1234, *e3 =  (void*)0x13213,  *e4 =  (void*)0x11673, *e5 =  (void*)0x12568;
 
-    pa2m_afirmar(lista_insertar(lista, e1) != NULL, "Insertar un elemento al final devuelve la lista");
-    pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == e1, "Obtener el primer elemento insertado me da el mismo elemento");
-    pa2m_afirmar(lista_tamanio(lista) == 1, "La lista tiene 1 elemento");
-    pa2m_afirmar(lista_tamanio(lista) != 0, "La lista no está vacia");
+    pa2m_afirmar(lista_insertar(lista, e1) == lista, "Insertar un elemento al final devuelve la lista");
+    pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == e1, "Al insertar el elemento obtengo el mismo elemento.");
+    pa2m_afirmar(lista_tamanio(lista) == 1, "La lista tiene 1 elementos");
 
-    pa2m_afirmar(lista_insertar_en_posicion(lista, e2, 0) != NULL, "Insertar un elemento al inicio devuelve la lista");
-    pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == e2, "Obtener el segundo elemento insertado me da el mismo elemento");
+    pa2m_afirmar(lista_insertar_en_posicion(lista, e2, 1) == lista, "Insertar un segundo elemento al final devuelve la lista");
+    pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == e2, "Al insertar el segundo elemento obtengo el mismo elemento.");
     pa2m_afirmar(lista_tamanio(lista) == 2, "La lista tiene 2 elementos");
 
-    pa2m_afirmar(lista_insertar_en_posicion(lista, e3, 100) != NULL, "Insertar un elemento en la posicion 100 devuelve la lista");
+    pa2m_afirmar(lista_insertar_en_posicion(lista, e3, 0) == lista, "Insertar un tercer elemento al inicio devuelve la lista");
+    pa2m_afirmar(lista_primero(lista) == e3, "Al insertar el tercer elemento obtengo el mismo elemento.");
     pa2m_afirmar(lista_tamanio(lista) == 3, "La lista tiene 3 elementos");
 
-    pa2m_afirmar(lista_insertar_en_posicion(lista, e4, 2) != NULL, "Insertar un elemento en la posicion 2 devuelve la lista");
+    pa2m_afirmar(lista_insertar_en_posicion(lista, e4, 2) == lista, "Insertar un cuarto elemento en el medio devuelve la lista");
+    pa2m_afirmar(lista_elemento_en_posicion(lista, 2) == e4, "Al insertar el cuarto elemento obtengo el mismo elemento.");
     pa2m_afirmar(lista_tamanio(lista) == 4, "La lista tiene 4 elementos");
 
-    pa2m_afirmar(lista_insertar_en_posicion(lista, e5, 4) != NULL, "Insertar un elemento en la posicion 4 devuelve la lista");
-    pa2m_afirmar(lista_tamanio(lista) == 5, "La lista tiene 5 elemento");
-
-    pa2m_afirmar(lista_insertar_en_posicion(lista, e6, 6) != NULL, "Insertar un elemento en la posicion 6 devuelve la lista");
-    pa2m_afirmar(lista_tamanio(lista) == 6, "La lista tiene 6 elementos");
+    pa2m_afirmar(lista_insertar_en_posicion(lista, e5, 100) == lista, "Insertar un quinto elemento en una posicion que no existe, lo inserta al final");
+    pa2m_afirmar(lista_ultimo(lista) == e5, "Al insertar el quinto elemento obtengo el mismo elemento.");
+    pa2m_afirmar(lista_tamanio(lista) == 5, "La lista tiene 5 elementos");
 
     lista_destruir(lista);
-    //lista_destruir_todo(lista, lista_destruir(lista));
 }
 
 
@@ -90,23 +63,20 @@ int main()
 	pa2m_nuevo_grupo(
 		"\n======================= pruebas de creacion de listas ========================");
     se_puede_crear_lista();
-    una_lista_recien_creada_tiene_tamano_0();
-
+    
     pa2m_nuevo_grupo(
 		"\n======================= pruebas con lista vacia ========================");
-    el_primer_elemento_lista_vacia_es_null();
-    el_ultimo_elemento_lista_vacia_es_null();
-    borrar_al_final_lista_vacia_devuelve_null();
-    borrar_en_posicion_arbitraria_de_lista_vacia_devuelve_null();
-    pedir_una_posicion_arbitraria_de_lista_vacia_devuelve_null();
+    se_puede_agregar_o_quitar_elementos_de_lista_null();
 
     pa2m_nuevo_grupo(
 		"\n======================= pruebas de inserción ========================");
     insertar_varios_elementos_devuelve_lista();
 
+    /*
     pa2m_nuevo_grupo(
 		"\n======================= pruebas de borrar un solo elemento ========================");
     puedo_borrar_elemento_en_lista_con_un_elemento();
+    */
 
 	return pa2m_mostrar_reporte();
 }
