@@ -22,18 +22,6 @@ struct lista_iterador
 	lista_t *lista;
 };
 
-
-nodo_t* crear_nodo(void *elemento) {
-	nodo_t *nuevo_nodo = malloc(sizeof(nodo_t));
-	if (nuevo_nodo == NULL) {
-		return NULL;
-	}
-	nuevo_nodo->elemento = elemento;
-	nuevo_nodo->siguiente = NULL;
-	return nuevo_nodo;
-}
-
-
 //Pre: -------------------------------------------------------------
 //Post: Dada una lista y un nodo, la función eliminará al nodo especificado de la lista. En caso de que se pueda eliminar, retornará el elemento que fue eliminado
 //en caso contrario retornará NULL.
@@ -82,7 +70,7 @@ lista_t *lista_insertar(lista_t *lista, void *elemento)
 		return NULL;
 	}
 
-	nodo_t *nuevo_nodo = crear_nodo(elemento);
+	nodo_t *nuevo_nodo = malloc(sizeof(nodo_t));
 	if (nuevo_nodo == NULL)
 	{
 		lista_destruir(lista);
@@ -114,7 +102,7 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 		return NULL;
 	}
 
-	nodo_t *nodo_nuevo = crear_nodo(elemento);
+	nodo_t *nodo_nuevo = malloc(sizeof(nodo_t));
 	if (nodo_nuevo == NULL)
 	{
 		lista_destruir(lista);
