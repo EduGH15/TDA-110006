@@ -17,7 +17,6 @@ struct lista {
 struct lista_iterador {
 	nodo_t* nodo_actual;
 	lista_t* lista;
-	size_t elementos_iterados;
 };
 
 lista_t *lista_crear()
@@ -26,7 +25,7 @@ lista_t *lista_crear()
 }
 
 lista_t *lista_insertar(lista_t *lista, void *elemento) {
-    if (lista == NULL || elemento == NULL) {
+    if (lista == NULL) {
         return NULL; 
     }
 
@@ -53,7 +52,7 @@ lista_t *lista_insertar(lista_t *lista, void *elemento) {
 lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 				    size_t posicion)
 {
-	if(lista == NULL || elemento == NULL){
+	if(lista == NULL){
 		return NULL;
 	}
 
@@ -125,7 +124,6 @@ void *lista_quitar(lista_t *lista)
 	return elemento;
 }
 
-
 void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 {
 	if(lista == NULL || lista->nodo_inicio == NULL){
@@ -182,7 +180,7 @@ void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
 void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 			    void *contexto)
 {
-	if(lista == NULL || comparador == NULL || contexto == NULL || lista_vacia(lista)){
+	if(lista == NULL || comparador == NULL || lista_vacia(lista)){
 		return NULL;
 	}
 
@@ -223,10 +221,7 @@ void *lista_ultimo(lista_t *lista)
 
 bool lista_vacia(lista_t *lista)
 {	
-	if(lista == NULL){
-		return false;
-	}
-	return lista_tamanio(lista) == 0;
+	return lista == NULL || lista_tamanio(lista) == 0;
 }
 
 size_t lista_tamanio(lista_t *lista)
@@ -293,25 +288,23 @@ lista_iterador_t *lista_iterador_crear(lista_t *lista)
 	
 	lista_iterador->nodo_actual = lista->nodo_inicio;
 	lista_iterador->lista = lista;
-	lista_iterador->elementos_iterados = 0;
 	return lista_iterador;
 }
 
 bool lista_iterador_tiene_siguiente(lista_iterador_t *iterador)
 {	
-    if(iterador == NULL || iterador->lista == NULL || iterador->elementos_iterados >= iterador->lista->cantidad) 
+    if(iterador == NULL || iterador->lista == NULL || lista_vacia(iterador->lista)) 
         return false;
 
-    return iterador->nodo_actual->siguiente != NULL;
+    return iterador->nodo_actual != NULL;
 }
 
 bool lista_iterador_avanzar(lista_iterador_t *iterador)
 {	
-	if(iterador == NULL || iterador->nodo_actual == NULL || iterador->lista == NULL || iterador->elementos_iterados >= iterador->lista->cantidad)
+	if(iterador == NULL || iterador->nodo_actual == NULL || iterador->lista == NULL)
 		return false;
 	
 	iterador->nodo_actual = iterador->nodo_actual->siguiente;
-	(iterador->elementos_iterados)++;
 	
 	if(iterador->nodo_actual == NULL){
 		return false;
@@ -351,5 +344,3 @@ size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),
 	return contador;
 }
 
-//Casos a tomar en cuenta a la hora de insertar o borrar. Cuando elimino al inicio, en medio y el fin.
-//Las primitivas no puedo mezclarlas. 

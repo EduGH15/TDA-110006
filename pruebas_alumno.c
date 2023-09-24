@@ -23,7 +23,7 @@ void se_puede_agregar_o_quitar_elementos_de_lista_null(){
 void insertar_varios_elementos_devuelve_lista(){
     lista_t* lista = lista_crear();
     void *e1 = (void*)0xbebecafe, *e2 = (void*)0x1234, *e3 =  (void*)0x13213,  *e4 =  (void*)0x11673, *e5 =  (void*)0x12568;
-
+    
     pa2m_afirmar(lista_insertar(lista, e1) == lista, "Insertar un elemento al final devuelve la lista");
     pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == e1, "Al insertar el elemento obtengo el mismo elemento.");
     pa2m_afirmar(lista_tamanio(lista) == 1, "La lista tiene 1 elementos"); // e1
