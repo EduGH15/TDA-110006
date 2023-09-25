@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 typedef struct nodo
 {
@@ -218,17 +219,16 @@ void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 	bool encontrado = false;
 	while (contador < lista_tamanio(lista) && !encontrado)
 	{
-		if ((*comparador)(nodo_actual->elemento, contexto) == 0)
+		if ((comparador)(nodo_actual->elemento, contexto) == 0)
 		{
 			encontrado = true;
 		}
 		else
 		{
 			nodo_actual = nodo_actual->siguiente;
+			contador++;
 		}
-		contador++;
 	}
-
 	if (encontrado)
 		return nodo_actual->elemento;
 	else
@@ -372,15 +372,17 @@ void lista_iterador_destruir(lista_iterador_t *iterador)
 size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),
 							   void *contexto)
 {
-	if (lista == NULL || funcion == NULL || contexto == NULL)
-	{
+	if (lista == NULL || funcion == NULL || lista_vacia(lista))
 		return 0;
-	}
-
+	
 	size_t contador = 0;
 	nodo_t *nodo_actual = lista->nodo_inicio;
-	while (nodo_actual != NULL && (funcion)(nodo_actual->elemento, contexto))
-	{
+	bool seguir_leyendo = true;
+	while (nodo_actual != NULL && seguir_leyendo)
+	{	
+		if((funcion)(nodo_actual->elemento, contexto) == false){
+			seguir_leyendo = false;
+		}
 		nodo_actual = nodo_actual->siguiente;
 		contador++;
 	}
