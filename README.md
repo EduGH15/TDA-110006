@@ -25,11 +25,7 @@ línea con valgrind
 ---
 ##  Funcionamiento
 
-Explicación de cómo funcionan las estructuras desarrolladas en el TP y el funcionamiento general del mismo.
 
-Aclarar en esta parte todas las decisiones que se tomaron al realizar el TP, cosas que no se aclaren en el enunciado, fragmentos de código que necesiten explicación extra, etc.
-
-Incluír **EN TODOS LOS TPS** los diagramas relevantes al problema (mayormente diagramas de memoria para explicar las estructuras, pero se pueden utilizar otros diagramas si es necesario).
 
 ### Por ejemplo:
 
@@ -56,5 +52,12 @@ vector_original = vector;
 
 ---
 
-## Respuestas a las preguntas teóricas
-Incluír acá las respuestas a las preguntas del enunciado (si aplica).
+## Puntos teóricos
+
+ - ¿Qué es una lista/pila/cola? Explicar con diagramas.
+ - Explica y analiza las diferencias de complejidad entre las implementaciones de lista simplemente enlazada, doblemente enlazada y vector dinámico para las operaciones:
+   - Insertar/obtener/eliminar al inicio
+   - Insertar/obtener/eliminar al final
+   - Insertar/obtener/eliminar al medio
+ - Explica la complejidad de las operaciones implementadas en tu trabajo para la pila y la cola.
+
