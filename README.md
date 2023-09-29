@@ -101,19 +101,19 @@ Al terminar de ejecutarse la función, se ha eliminado el nodo que se encontraba
 
 ## Destruir la lista:
 
-Una de las últimas funciones a explicar es la función lista_destruir, el cual tiene dos punteros que apuntan a un nodo_actual y a un nodo_siguiente. Primero se libera el nodo_siguiente y después hacemos que el nodo_actual apunte a NULL. 
+Una de las últimas funciones a explicar es la función lista_destruir, el cual tiene dos punteros que apuntan a un nodo_actual y a un nodo_siguiente. 
 
 <div align="center">
 <img width="70%" src="img/Lista_destruir().png">
 </div>
 
-Debido a que solo hay dos elementos en la lista, no tiene sentido determinar un nuevo nodo_actual y un nuevo nodo_siguiente, por lo que el actual sigue apuntando al mismo lugar y el siguiente a NULL. Luego liberamos la memoria del nodo_actual.
+ Primero se libera el nodo_siguiente y después hacemos que el nodo_actual apunte a NULL. Debido a que solo hay dos elementos en la lista, no tiene sentido determinar un nuevo nodo_actual y un nuevo nodo_siguiente, por lo que el actual sigue apuntando al mismo lugar y el siguiente a NULL. 
 
 <div align="center">
 <img width="70%" src="img/Lista_destruir_2().png">
 </div>
 
-Por ultimo, ya que no quedan más elementos en la lista, liberamos la memoria de la lista. 
+Luego liberamos la memoria del nodo_actual y ya que no quedan más elementos en la lista, liberamos la memoria de la lista. 
 
 <div align="center">
 <img width="70%" src="img/Lista_destruir_3().png">
